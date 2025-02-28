@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Lizard Spock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #0a1f44;
+            color: white;
+        }
+        .game-container {
+            margin-top: 50px;
+        }
+        .choices {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .choice {
+            width: 80px;
+            height: 80px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .score {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        .rules {
+            margin-top: 20px;
+            font-size: 18px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .rules-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock Paper Scissors Lizard Spock</h1>
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="game-container">
+        <div class="choices">
+            <div class="choice" id="rock" style="background-image: url('bg-pentagon.svg'); background-size: cover;"></div>
+            <div class="choice" id="paper" style="background-image: url('bg-triangle.svg'); background-size: cover;"></div>
+            <div class="choice" id="scissors" style="background-image: url('desktop-step-1-bonus.jpg'); background-size: cover;"></div>
+            <div class="choice" id="lizard" style="background-image: url('desktop-rules-modal-bonus.jpg'); background-size: cover;"></div>
+            <div class="choice" id="spock" style="background-image: url('favicon-32x32.png'); background-size: cover;"></div>
+        </div>
+    </div>
+    <div class="rules" onclick="showRules()">Rules</div>
+    <div class="rules-modal" id="rules-modal">
+        <img src="desktop-rules-modal-bonus.jpg" width="300">
+        <br>
+        <button onclick="closeRules()">Close</button>
+    </div>
+    <script>
+        let score = 0;
+        const choices = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
+
+        document.querySelectorAll('.choice').forEach(choice => {
+            choice.addEventListener('click', function() {
+                const userChoice = this.id;
+                const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+                determineWinner(userChoice, computerChoice);
+            });
+        });
+
+        function determineWinner(user, computer) {
+            const rules = {
+                rock: ['scissors', 'lizard'],
+                paper: ['rock', 'spock'],
+                scissors: ['paper', 'lizard'],
+                lizard: ['spock', 'paper'],
+                spock: ['scissors', 'rock']
+            };
+            if (user === computer) {
+                alert(`It's a tie! Both chose ${user}`);
+            } else if (rules[user].includes(computer)) {
+                score++;
+                alert(`You win! ${user} beats ${computer}`);
+            } else {
+                score--;
+                alert(`You lose! ${computer} beats ${user}`);
+            }
+            document.getElementById('score').textContent = score;
+        }
+
+        function showRules() {
+            document.getElementById('rules-modal').style.display = 'block';
+        }
+        function closeRules() {
+            document.getElementById('rules-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
